@@ -179,8 +179,10 @@ public class TableInfo {
         IdType idType = entity.getIdType();
         if (null != idType && this.isHavePrimaryKey()) {
             // 指定需要 IdType 场景
-            this.importPackages.add(IdType.class.getCanonicalName());
-            this.importPackages.add(TableId.class.getCanonicalName());
+            if (!entity.matchIgnoreColumns("id")) { // 如果忽略id字段，则不导入
+                this.importPackages.add(IdType.class.getCanonicalName());
+                this.importPackages.add(TableId.class.getCanonicalName());
+            }
         }
         this.fields.forEach(field -> {
             IColumnType columnType = field.getColumnType();
